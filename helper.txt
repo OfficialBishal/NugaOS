@@ -1,0 +1,70 @@
+make loader.o
+
+make kernel.o
+
+make kernel.bin
+
+make install
+
+make mykernel.iso
+
+ls /boot/
+vim /boot/grub/grub.cfg
+
+### BEGIN MYKERNEL ###
+
+mneuntry 'My Operating System' {
+        multiboot /boot/mykernel.bin
+        boot
+}
+
+### END MYKERNEL ###
+
+
+
+
+export PATH="$HOME/opt/cross/bin:$PATH"
+
+
+i686-elf-as loader.s -o loader.o
+
+i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+i686-elf-g++ -c kernel.cpp -o kernel.o -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti
+
+i686-elf-gcc -T linker.ld -o mykernel.bin -ffreestanding -O2 -nostdlib loader.o kernel.o -lgcc
+
+
+
+
+Verify Multiboot:
+
+if grub-file --is-x86-multiboot mykernel.bin; then
+  echo multiboot confirmed
+else
+  echo the file is not multiboot
+fi
+
+
+
+
+
+Making Bootable:
+
+mkdir -p isodir/boot/grub
+cp mykernel.bin isodir/boot/mykernel.bin
+cp grub.cfg isodir/boot/grub/grub.cfg
+grub-mkrescue -o mykernel.iso isodir
+
+
+
+
+qemu-system-i386 -cdrom mykernel.iso
+qemu-system-i386 -kernel mykernel.bin
+
+
+
+
+g++ $(GPPPARAMS) -o kernel.o -c kernel.cpp
+		as $(ASPARAMS) -o loader.o loader.s
+		ld $(LDPARAMS) -T linker.ld mykernel.bin $(objects)
+		qemu-system-i386 -kernel mykernel.bin
