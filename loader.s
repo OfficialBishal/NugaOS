@@ -20,7 +20,7 @@
 loader:
     mov $kernel_stack, %esp
 
-    call callConstructors
+    call callConstructors   #test
 
     push %eax   #use info from multiboot structure
     push %ebx   #use info from multiboot structure
@@ -35,4 +35,4 @@ _stop:
 
 .section .bss
 .space 2*1024*1024; # 2B x KB x MB
-kernel_stack:
+kernel_stack:  
