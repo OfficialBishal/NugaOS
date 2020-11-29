@@ -21,9 +21,10 @@ class InterruptManager
 			uint16_t handlerAddressHighBits;
 		} __attribute__((packed));
 
-
+		// array with 256 entries
 		static GateDescriptor interruptDescriptorTable[256];
 
+		// tell processor to use IDT entries
 		struct InterruptDescriptorTablePointer
 		{
 			uint16_t size;
@@ -31,13 +32,22 @@ class InterruptManager
 		} __attribute__((packed));
 
 
+		// set entries in IDT
 		static void SetInterruptDescriptorTableEntry(
-				uint8_t interruptNumber,
-				uint16_t codeSegmentSelectorOffset,
-				void (*handler)(),
-				uint8_t DescriptorPrivilegeLevel,
-				uint8_t DescriptorType
-			);
+			uint8_t interruptNumber,
+			uint16_t codeSegmentSelectorOffset,
+			void (*handler)(),
+			uint8_t DescriptorPrivilegeLevel,
+			uint8_t DescriptorType
+		);
+
+		// tell PIC(Programmable Interrupt Controller) to give interrupt
+		// 2 PIC =  Master PIC and Slave PIC
+		Port8BitSlow picMasterCommand;
+        Port8BitSlow picMasterData;
+        Port8BitSlow picSlaveCommand;
+        Port8BitSlow picSlaveData;
+
 
 
 	public:
@@ -45,6 +55,7 @@ class InterruptManager
 		InterruptManager(GlobalDescriptorTable* gdt);
 		~InterruptManager();
 
+		// start the interrupt after being loaded into processor
 		void Activate();
 
 		// .extern _ZN16InterruptManager15handleInterruptEhj

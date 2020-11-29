@@ -58,11 +58,15 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t /*magicnumber*/)
     printf("Welcome to my OS!\n");
     printf("Welcome to my OS!");
 
+    // instantiate table
     GlobalDescriptorTable gdt;
     InterruptManager interrupts(&gdt);
 
+    // instantiate hardware
 
+    // activate hardware
 
+    // activate interrupt
     interrupts.Activate();
 
 
