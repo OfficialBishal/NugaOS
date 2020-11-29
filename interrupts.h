@@ -3,14 +3,15 @@
 #define __INTERRUPTS_H
 
 #include "types.h"
-#include "port.h"
 #include "gdt.h"
+#include "port.h"
 
-	class InterruptManager
-	{
+class InterruptManager
+{
 
 	protected:
 
+		// Entries of IDT is called GateDescriptor
 		struct GateDescriptor
 		{
 			uint16_t handlerAddressLowBits;
@@ -46,14 +47,14 @@
 
 		void Activate();
 
-
+		// .extern _ZN16InterruptManager15handleInterruptEhj
 		static uint32_t handleInterrupt(uint8_t interruptNumber, uint32_t esp);
 
 		static void IgnoreInterruptRequest();
 		static void HandleInterruptRequest0x00();	//timer interrupt
 		static void HandleInterruptRequest0x01();	//keyboard interrupt
 
-	};
+};
 
 
 

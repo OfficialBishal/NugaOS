@@ -21,7 +21,6 @@ install: mykernel.bin
 
 mykernel.iso: mykernel.bin
 		mkdir -p isodir/boot/grub
-		mkdir -p isodir/boot/grub
 		cp mykernel.bin isodir/boot/mykernel.bin
 		cp grub.cfg isodir/boot/grub/grub.cfg
 		grub-mkrescue --output=$@ isodir
