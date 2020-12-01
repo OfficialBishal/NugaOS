@@ -143,7 +143,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
 	if(handlers[interruptNumber] != 0)
     {
     	printf("HANDLING INTERRUPT...");
-        esp = handlers[interruptNumber]->handleInterrupt(esp);	//it was captital 'H' before
+        esp = handlers[interruptNumber]->HandleInterrupt(esp);	//it was captital 'H' before
     }
 	else if(interruptNumber != 0x20)	//0x20 is for timer
 	{
