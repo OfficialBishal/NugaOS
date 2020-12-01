@@ -6,10 +6,29 @@
 #include "gdt.h"
 #include "port.h"
 
-class InterruptManager
-{
+	class InterruptManager;
+
+	class InterruptHandler
+	{
+	protected:
+	    uint8_t interruptNumber;
+	    InterruptManager* interruptManager;
+	    InterruptHandler(uint8_t interruptNumber, InterruptManager* interruptManager);
+	    ~InterruptHandler();
+	public:
+	    virtual uint32_t HandleInterrupt(uint32_t esp);
+	};
+
+
+	class InterruptManager
+	{
+
+	friend class InterruptHandler;
 
 	protected:
+
+		static InterruptManager* ActiveInterruptManager;	//pointer to 1 active interrupt
+		InterruptHandler* handlers[256];
 
 		// Entries of IDT is called GateDescriptor
 		struct GateDescriptor
@@ -55,17 +74,20 @@ class InterruptManager
 		InterruptManager(GlobalDescriptorTable* gdt);
 		~InterruptManager();
 
-		// start the interrupt after being loaded into processor
+		// start and stop the interrupt after being loaded into processor
 		void Activate();
+		void Deactivate();
 
 		// .extern _ZN16InterruptManager15handleInterruptEhj
 		static uint32_t handleInterrupt(uint8_t interruptNumber, uint32_t esp);
+		uint32_t DoHandleInterrupt(uint8_t interruptNumber, uint32_t esp);
 
 		static void IgnoreInterruptRequest();
+
 		static void HandleInterruptRequest0x00();	//timer interrupt
 		static void HandleInterruptRequest0x01();	//keyboard interrupt
 
-};
+	};
 
 
 

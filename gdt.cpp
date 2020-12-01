@@ -10,8 +10,8 @@ GlobalDescriptorTable::GlobalDescriptorTable()
 //tell processor to use GDT
 //Processor expects 8bytes in a row
 	uint32_t i[2];
-	i[0] = (uint32_t)this;
-	i[1] = sizeof(GlobalDescriptorTable) << 16;	//shift to left cause it needs to be in high bytes.
+	i[1] = (uint32_t)this;
+	i[0] = sizeof(GlobalDescriptorTable) << 16;	//shift to left cause it needs to be in high bytes.
 
 	asm volatile("lgdt (%0)": :"p" (((uint8_t *) i)+2));	//tell asm to load GDT
 
@@ -67,15 +67,18 @@ GlobalDescriptorTable::SegmentDescriptor::SegmentDescriptor(uint32_t base, uint3
 		target[6] = 0xC0;
 	}
 
+	// Encode the limit
 	target[0] = limit & 0xFF;			//lsb of limit
 	target[1] = limit >> 8 & 0xFF;
 	target[6] |= (limit >> 16) & 0xF;	// |= to set only lower bits 
 
+	// Encode the base
 	target[2] = (base) & 0xFF;
 	target[3] = (base >> 8) & 0xFF;
 	target[4] = (base >> 16) & 0xFF;
 	target[7] = (base >> 24) & 0xFF;
 
+	// Encode the type
 	target[5] = flags;
 }
 
@@ -83,10 +86,12 @@ uint32_t GlobalDescriptorTable::SegmentDescriptor::Base()
 {
 	//isn't that hard cause all 4bytes are preserved
 	uint8_t* target = (uint8_t*)this;
+
 	uint32_t result = target[7];
 	result = (result << 8) + target[4];
 	result = (result << 8) + target[3];
 	result = (result << 8) + target[2];
+
 	return result;
 }
 
@@ -94,6 +99,7 @@ uint32_t GlobalDescriptorTable::SegmentDescriptor::Limit()
 {
 	
 	uint8_t* target = (uint8_t*)this;
+	
 	uint32_t result = target[6] & 0xF;
 	result = (result << 8) + target[1];
 	result = (result << 8) + target[0];
