@@ -143,7 +143,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
 	if(handlers[interruptNumber] != 0)
     {
     	printf("HANDLING INTERRUPT...");
-        esp = handlers[interruptNumber]->HandleInterrupt(esp);	//it was captital 'H' before
+        esp = handlers[interruptNumber]->HandleInterrupt(esp);
     }
 	else if(interruptNumber != 0x20)	//0x20 is for timer
 	{
@@ -153,6 +153,7 @@ uint32_t InterruptManager::DoHandleInterrupt(uint8_t interruptNumber, uint32_t e
 
 	if(0x20 <= interruptNumber && interruptNumber < 0x30)
 	{
+		printf("WRITE INTERRUPT");
 		picMasterCommand.Write(0x20);
 		if(0x28 <= interruptNumber)
 			picSlaveCommand.Write(0x20);

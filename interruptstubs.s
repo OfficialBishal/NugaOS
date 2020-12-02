@@ -20,7 +20,7 @@ _ZN16InterruptManager16handleException\num\()Ev:
 .global _ZN16InterruptManager26HandleInterruptRequest\num\()Ev
 _ZN16InterruptManager26HandleInterruptRequest\num\()Ev:
 	movb $\num + IRQ_BASE, (interruptnumber)
-	#pushl $0
+	# pushl $0
 	jmp int_bottom
 .endm
 
@@ -49,17 +49,17 @@ int_bottom:
     # pushl %eax
 
 # load ring 0 segment register
-    #cld
-    #mov $0x10, %eax
-    #mov %eax, %eds
-    #mov %eax, %ees
+    # cld
+    # mov $0x10, %eax
+    # mov %eax, %eds
+    # mov %eax, %ees
 
 # call C++ Handler: jump into handleInterrupt fucntion
 	push %esp
 	push (interruptnumber)
 	call _ZN16InterruptManager15handleInterruptEhj
 	# addl $5, %esp		// clean these from stack 
-	movl %eax, %esp		# seitch the stack; mov %eax, %esp
+	movl %eax, %esp		# switch the stack; mov %eax, %esp
 
 # retrieve the saved registers value
     # popl %eax

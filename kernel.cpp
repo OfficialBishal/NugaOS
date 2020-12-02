@@ -70,18 +70,18 @@ extern "C" void kernelMain(void* multiboot_structure, uint32_t /*magicnumber*/)
 
 
     // instantiate table
+    printf("Initializing GTD & IDT...");
     GlobalDescriptorTable gdt;
-    
     InterruptManager interrupts(&gdt);
-    printf("GTD & IDT initiated...");
 
     // instantiate hardware
+    printf("\nInitializing Keyboard...");
     KeyboardDriver keyboard(&interrupts);
     // activate hardware
 
     // activate interrupt
     interrupts.Activate();
-    printf("\nInterrupt Activated...");
+    printf("\nInterrupt Activated.");
 
     while(1);
 }
