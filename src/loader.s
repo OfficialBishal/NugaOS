@@ -10,29 +10,33 @@
     .long FLAGS
     .long CHECKSUM
 
+.section .multiboot
+    .long MAGIC
+    .long FLAGS
+    .long CHECKSUM
+
 
 .section .text
 .extern kernelMain
-.extern callConstructors()
+.extern callConstructors
 .global loader
 
 
 loader:
     mov $kernel_stack, %esp
-
     call callConstructors   #test
-
     push %eax   #use info from multiboot structure
     push %ebx   #use info from multiboot structure
     call kernelMain
 
+
 _stop:
-    cli         # clear interrupt
+    cli     # clear interrupt
     hlt
     jmp _stop
 
 
-
 .section .bss
-.space 2*1024*1024; # 2B x KB x MB
-kernel_stack:  
+.space 2*1024*1024; # 2 MiB = 2B x KB x MB
+kernel_stack:
+
