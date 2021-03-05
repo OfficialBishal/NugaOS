@@ -14,6 +14,6 @@
 - Dynamic Memory Management ✅
 - Multi-tasking ✅
 
-#### make run : in order to run the OS
+#### In the terminal, execute 'make run' in order to run the OS.
 
 ##### (This project was possible due to various help from the internet.)
