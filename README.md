@@ -1,12 +1,19 @@
 # NugaOS  
 
 ### Till Now:  
-- makefile 
-- linker 
-- loader 
+- makefile ✅
+- linker ✅
+- loader ✅
 - kernel *(on progress)*
 - types ✅
 - Port ✅
-- GDT 
-- IDT *(getting error)*
-- Keyboard *(stuck because of error in interrupt)*
+- GDT ✅
+- IDT ✅
+- Keyboard ✅
+- Mouse ✅
+- Dynamic Memory Management ✅
+- Multi-tasking ✅
+
+#### make run : in order to run the OS
+
+##### (This project was possible due to various help from the internet.)
